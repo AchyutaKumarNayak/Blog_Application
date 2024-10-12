@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <style>
+        body {
+            padding-top: 56px;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Quill Editor CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="container-fluid">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Achyuta Blog App</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addPost">New Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Comments</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mt-5">
+            <h2 class="mb-4">Edit Post</h2>
+            <p th:text="${succMsg}" class="text-success"></p>
+            <p th:text="${errMsg}" class="text-danger"></p>
+            <!-- Form to edit a post -->
+            <form th:action="@{/updatePost}" th:object="${addPost}" method="POST">
+              <!-- Hidden field for post ID -->
+              <input type="hidden" th:field="*{postId}">
+                <!-- Post Title -->
+                <div class="mb-3">
+                    <label for="postTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="postTitle" th:field="*{title}" placeholder="Enter post title">
+                </div>
+
+                <!-- Post Short Description -->
+                <div class="mb-3">
+                    <label for="postShortDesc" class="form-label">Short Description</label>
+                    <textarea class="form-control" id="postShortDesc" th:field="*{description}" rows="2"></textarea>
+                </div>
+
+                <!-- Post Content with Quill Editor -->
+                <div class="mb-3">
+                    <label for="postContent" class="form-label">Content</label>
+                    <!-- Quill Editor Container -->
+                    <div id="editor" style="height: 200px;"></div>
+                    <!-- Hidden textarea for storing Quill content -->
+                    <textarea id="postContent" th:field="*{content}" style="display: none;"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 30px;">Update Post</button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer mt-auto bg-dark text-white text-center py-3">
+            <div class="container">
+                <span>Copyright © 2024 <a href="#" style="color: #0d6efd;">Achyuta IT</a> All rights reserved.</span>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Quill Editor JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<!-- Initialize Quill Editor with existing content -->
+<script>
+    // Initialize Quill editor
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: 'Enter post content',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                ['link', 'blockquote', 'code-block', 'image'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['clean']  // remove formatting button
+            ]
+        }
+    });
+
+    // Pre-populate the editor with existing content from the textarea
+    var content = document.getElementById('postContent').value;
+    quill.root.innerHTML = content;
+
+    // Update the hidden textarea with the Quill editor content before form submission
+    document.querySelector('form').onsubmit = function() {
+        document.getElementById('postContent').value = quill.root.innerHTML;
+    };
+</script>
+</body>
+</html>

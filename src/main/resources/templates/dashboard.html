@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Blog Posts</title>
+    <style>
+        body {
+            padding-top: 26px;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="container-fluid">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="dashboard">Achyuta Blog App</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addPost">New Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Comments</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mt-5">
+            <h2 class="mb-4">List Blog Posts</h2>
+
+            <!-- Search Box with AJAX Call -->
+            <div class="mb-3">
+                <input type="text" id="search-box" class="form-control d-inline-block w-50" placeholder="Search">
+                <button class="btn btn-primary" id="search-button">Search</button>
+            </div>
+
+            <!-- Blog Posts Table -->
+            <p th:text="${succMsg}" class="text-success"></p>
+            <p th:text="${errMsg}" class="text-danger"></p>
+
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Post Id</th>
+                        <th>Post Title</th>
+                        <th>Post Short Description</th>
+                        <th>Post Created On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="post-table-body">
+                    <!-- Initial Thymeleaf iteration over posts -->
+                    <tr th:each="post : ${posts}">
+                        <td th:text="${post.postId}"></td>
+                        <td th:text="${post.title}">Post Title</td>
+                        <td th:text="${post.description}">Post Description</td>
+                        <td th:text="${post.createdOn}">Post Created On</td>
+                        <td>
+                            <!-- Edit Button -->
+                            <a th:href="@{/editPost/{id} (id=${post.postId})}" class="btn btn-success btn-sm">Edit</a>
+                            <a th:href="@{/deletePost/{id} (id=${post.postId})}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script>
+        document.getElementById('search-button').addEventListener('click', function() {
+            let query = document.getElementById('search-box').value;
+
+            // Perform AJAX request
+            fetch('/search?query=' + query)
+                .then(response => response.json())
+                .then(data => {
+                    let tbody = document.getElementById('post-table-body');
+                    tbody.innerHTML = '';  // Clear existing table content
+
+                    // Check if data is empty
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" class="text-center">No posts found</td></tr>';
+                    }
+
+                    // Populate the table with the search results
+                    data.forEach(post => {
+                        let row = `<tr>
+                            <td>${post.postId}</td>
+                            <td>${post.title}</td>
+                            <td>${post.description}</td>
+                            <td>${post.createdOn}</td>
+                            <td>
+                                <a href="/editPost/${post.postId}" class="btn btn-success btn-sm">Edit</a>
+                                <a href="/deletePost/${post.postId}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+        <!-- Footer -->
+        <footer class="footer mt-auto bg-dark text-white text-center py-3">
+            <div class="container">
+                <span>Copyright © 2024 <a href="dashboard" style="color: #0d6efd;">Achyuta IT</a> All rights reserved.</span>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

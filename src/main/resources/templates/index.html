@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achyuta Blog App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .footer {
+            background-color: #212529;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        .blog-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .blog-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-box {
+            margin-top: 30px;
+        }
+        .search-box input {
+            width: 100%;
+        }
+        .blog-card a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .blog-card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Achyuta IT Blog App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">All Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register">Register</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mt-4">Blogs</h1>
+
+                <!-- Iterating over blog posts dynamically -->
+                <div th:each="post : ${posts}">
+                    <div class="blog-card">
+                        <a th:href="@{/posts/{id}(id=${post.postId})}" class="blog-title">What is <span th:text="${post.title}"></span>?</a>
+                        <p th:text="${post.createdOn}"></p>
+                        <p th:text="${post.description}"></p>
+                        <a th:href="@{/posts/{id}(id=${post.postId})}">Read more</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Search -->
+           <div class="col-md-4">
+              <div class="search-box">
+               <h4>Blog Search</h4>
+                <input type="text" class="form-control" id="searchQuery" placeholder="Search">
+                <button type="button" id="searchBtn" class="btn btn-primary mt-2" disabled>Search</button>
+               </div>
+           </div>
+
+        </div>
+    </div>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchQuery');
+            const searchButton = document.getElementById('searchBtn');
+            const blogContainer = document.querySelector('.col-md-8'); // Container for blog posts
+
+            // Enable the search button when there is input
+           searchInput.addEventListener('input', function() {
+           searchButton.disabled = searchInput.value.trim() === '';
+          });
+
+    // Handle search button click
+          searchButton.addEventListener('click', function() {
+          const query = searchInput.value.trim();
+          if (query) {
+            searchPosts(query);
+          }
+        });
+     
+       // Function to fetch posts based on search query
+       function searchPosts(query) {
+        fetch(`/filter?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                updateBlogPosts(data, query);
+            })
+            .catch(error => {
+                console.error('Error fetching posts:', error);
+            });
+       }
+
+       // Function to update the blog posts dynamically
+        function updateBlogPosts(posts, query) {
+        // Clear the current blog posts
+        blogContainer.innerHTML = '<h1 class="mt-4">Blogs</h1>';
+
+          if (posts.length > 0) {
+            // Iterate over each post and update the blog container
+            posts.forEach(post => {
+                const highlightedTitle = highlightText(post.title, query);
+                const highlightedDescription = highlightText(post.description, query);
+
+                const postHTML = `
+                    <div class="blog-card">
+                        <a href="/posts/${post.postId}" class="blog-title">${highlightedTitle}</a>
+                        <p>${post.createdOn}</p>
+                        <p>${highlightedDescription}</p>
+                        <a href="/posts/${post.postId}">Read more</a>
+                    </div>
+                `;
+                blogContainer.insertAdjacentHTML('beforeend', postHTML);
+            });
+          } else {
+            blogContainer.innerHTML += '<p>No posts found matching your query.</p>';
+         }
+       }
+
+       // Function to highlight search terms
+        function highlightText(text, query) {
+        const regex = new RegExp(`(${query})`, 'gi');
+        return text.replace(regex, '<span style="background-color: yellow;">$1</span>');
+       }
+      });
+      </script>
+        
+
+    <!-- Footer -->
+    <footer class="footer mt-auto">
+        <div class="container">
+            <span>Copyright © 2024 <a href="/" style="color: #0d6efd;">Achyuta IT</a> All rights reserved.</span>
+        </div>
+    </footer>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
