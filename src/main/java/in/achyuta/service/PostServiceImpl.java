@@ -64,4 +64,19 @@ public class PostServiceImpl implements PostService{
 	}
 
 
+
+	@Override
+	public Post getPostByPostId(Integer postId) {
+		
+		Optional<Post> byId = postRepo.findById(postId);
+		if (byId.isPresent()) {
+			Post post = byId.get();
+			return post;
+		}
+		
+		return null;
+	}
+	
+
+
 }

@@ -10,5 +10,7 @@ public interface PostService {
 	List<Post> getIndexPage();
 
 	List<DashboardResponse> searchPosts(Integer userId, String query);
+	
+	Post getPostByPostId(Integer postId);
 
 }
