@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import in.achyuta.binding.AddPostForm;
 import in.achyuta.binding.DashboardResponse;
+import in.achyuta.binding.ToShowComments;
 import in.achyuta.service.BlogService;
+import in.achyuta.service.CommentService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -24,6 +26,8 @@ public class BlogController {
 	private HttpSession session;
 	@Autowired
 	private BlogService blogService;
+	@Autowired 
+	private CommentService commentService;
 
 	
 	
@@ -85,4 +89,11 @@ public class BlogController {
 		Integer userId = (Integer) session.getAttribute("userId");
         return blogService.searchPosts(userId,query);
     }
+	@GetMapping("/comments")
+	public String toShowComment(Model model) {
+		Integer userId=(Integer)session.getAttribute("userId");
+		List<ToShowComments> showComments = commentService.toShowComments(userId);
+		model.addAttribute("comments", showComments);
+		return "comments";
+	}
 }
