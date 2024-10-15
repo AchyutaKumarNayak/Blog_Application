@@ -11,6 +11,8 @@
     </style>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container">
@@ -70,53 +72,21 @@
                 <tbody id="post-table-body">
                     <!-- Initial Thymeleaf iteration over posts -->
                     <tr th:each="post : ${posts}">
-                        <td th:text="${post.postId}"></td>
-                        <td th:text="${post.title}">Post Title</td>
-                        <td th:text="${post.description}">Post Description</td>
-                        <td th:text="${post.createdOn}">Post Created On</td>
-                        <td>
-                            <!-- Edit Button -->
-                            <a th:href="@{/editPost/{id} (id=${post.postId})}" class="btn btn-success btn-sm">Edit</a>
-                            <a th:href="@{/deletePost/{id} (id=${post.postId})}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
+    <td th:text="${post.postId}"></td>
+    <td th:text="${post.title}">Post Title</td>
+    <td th:text="${post.description}">Post Description</td>
+    <td th:text="${post.createdOn}">Post Created On</td>
+    <td>
+        <!-- Edit Button -->
+        <a th:href="@{/editPost/{id} (id=${post.postId})}" class="btn btn-success btn-sm">Edit</a>
+        <!-- Delete Button with SweetAlert2 Confirmation -->
+        <button class="btn btn-danger btn-sm" th:onclick="'confirmDelete(' + ${post.postId} + ')'">Delete</button>
+    </td>
+</tr>
+
                 </tbody>
             </table>
         </div>
-        <script>
-        document.getElementById('search-button').addEventListener('click', function() {
-            let query = document.getElementById('search-box').value;
-
-            // Perform AJAX request
-            fetch('/search?query=' + query)
-                .then(response => response.json())
-                .then(data => {
-                    let tbody = document.getElementById('post-table-body');
-                    tbody.innerHTML = '';  // Clear existing table content
-
-                    // Check if data is empty
-                    if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="5" class="text-center">No posts found</td></tr>';
-                    }
-
-                    // Populate the table with the search results
-                    data.forEach(post => {
-                        let row = `<tr>
-                            <td>${post.postId}</td>
-                            <td>${post.title}</td>
-                            <td>${post.description}</td>
-                            <td>${post.createdOn}</td>
-                            <td>
-                                <a href="/editPost/${post.postId}" class="btn btn-success btn-sm">Edit</a>
-                                <a href="/deletePost/${post.postId}" class="btn btn-danger btn-sm">Delete</a>
-                            </td>
-                        </tr>`;
-                        tbody.innerHTML += row;
-                    });
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
 
         <!-- Footer -->
         <footer class="footer mt-auto bg-dark text-white text-center py-3">
@@ -127,7 +97,59 @@
     </div>
 </div>
 
+<!-- JavaScript for AJAX Search and SweetAlert2 Confirmation -->
+<script>
+    document.getElementById('search-button').addEventListener('click', function() {
+        let query = document.getElementById('search-box').value;
 
+        // Perform AJAX request
+        fetch('/search?query=' + query)
+            .then(response => response.json())
+            .then(data => {
+                let tbody = document.getElementById('post-table-body');
+                tbody.innerHTML = '';  // Clear existing table content
+
+                // Check if data is empty
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">No posts found</td></tr>';
+                }
+
+                // Populate the table with the search results
+                data.forEach(post => {
+                    let row = `<tr>
+                        <td>${post.postId}</td>
+                        <td>${post.title}</td>
+                        <td>${post.description}</td>
+                        <td>${post.createdOn}</td>
+                        <td>
+                            <a href="/editPost/${post.postId}" class="btn btn-success btn-sm">Edit</a>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete(${post.postId})">Delete</button>
+                        </td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    // SweetAlert2 confirmation dialog for deletion
+    function confirmDelete(postId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect or perform AJAX request to delete the post
+                window.location.href = '/deletePost/' + postId;
+            }
+        })
+    }
+</script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

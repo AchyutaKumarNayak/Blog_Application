@@ -58,4 +58,15 @@ public class CommentServiceImpl implements CommentService {
 		return toShowComments;
 	}
 
+	@Override
+	public boolean deletePost(Integer commentId) {
+		Optional<Comment> byId = commentRepo.findById(commentId);
+		if(byId.isPresent()) {
+			System.out.println("Comment Deleted");
+			commentRepo.deleteCommentById(commentId);
+			return true;
+		}
+		return false;
+	}
+
 }

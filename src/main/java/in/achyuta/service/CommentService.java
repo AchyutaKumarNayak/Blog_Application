@@ -11,5 +11,6 @@ public interface CommentService {
 	List<Comment> getTopTwoCommentsByPost(Post post,Integer limit);
 	void save(Comment comment);
 	List<ToShowComments> toShowComments(Integer userId);
+	boolean deletePost(Integer commentId);
 
 }

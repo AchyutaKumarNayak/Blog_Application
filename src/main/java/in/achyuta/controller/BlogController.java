@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import in.achyuta.binding.AddPostForm;
 import in.achyuta.binding.DashboardResponse;
 import in.achyuta.binding.ToShowComments;
+import in.achyuta.constants.AppConstants;
 import in.achyuta.service.BlogService;
 import in.achyuta.service.CommentService;
 import jakarta.servlet.http.HttpSession;
@@ -40,24 +41,24 @@ public class BlogController {
 	
 	@GetMapping("/dashboard")
 	public String getDashboard(Model model) {
-		Integer userId =(Integer)session.getAttribute("userId");
+		Integer userId =(Integer)session.getAttribute(AppConstants.SESSION_USER_ID);
 		List<DashboardResponse> dashboardRes = blogService.getDashboardRes(userId);
-		model.addAttribute("posts", dashboardRes);
-		return "dashboard";
+		model.addAttribute(AppConstants.POSTS, dashboardRes);
+		return AppConstants.DASHBOARD;
 	}
 	@GetMapping("/addPost")
 	public String addPost(Model model) {
-		model.addAttribute("addPost",new AddPostForm());
-		return "addPost";
+		model.addAttribute(AppConstants.ADD_POST,new AddPostForm());
+		return AppConstants.ADD_POST;
 	}
 	@PostMapping("/addPost")
-	public String handleAddPost(@ModelAttribute("addPost") AddPostForm form,Model model) {
+	public String handleAddPost(@ModelAttribute(AppConstants.ADD_POST) AddPostForm form,Model model) {
 		System.out.println(form);
 		boolean status = blogService.addPost(form);
 		if(status) {
-			model.addAttribute("succMsg", "Post Added Successfully");
+			model.addAttribute(AppConstants.SUCC_MSG_KEY, AppConstants.SUCC_MSG_VALUE_ADD);
 		}else {
-			model.addAttribute("errMsg", "Some error occurred during add post");
+			model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_ADD);
 		}
 		return "redirect:/dashboard";
 	}
@@ -65,11 +66,11 @@ public class BlogController {
 	public String editPost(@PathVariable Integer id, Model model) {
 	    AddPostForm form = blogService.editPost(id);
 	    System.out.println(form);
-	    model.addAttribute("addPost", form);
-	    return "editPost"; 
+	    model.addAttribute(AppConstants.ADD_POST, form);
+	    return AppConstants.EDIT_POST; 
 	}
 	@PostMapping("/updatePost")
-	public String updatePost(@ModelAttribute("addPost") AddPostForm form, Model model) {
+	public String updatePost(@ModelAttribute(AppConstants.ADD_POST) AddPostForm form, Model model) {
 	    blogService.updatePost(form);
 	    return "redirect:/dashboard";
 	}
@@ -77,23 +78,33 @@ public class BlogController {
     public String deletePost(@PathVariable Integer id,Model model) {
 		boolean status = blogService.deletePost(id);
 		if (status) {
-	        model.addAttribute("succMsg", "Post Deleted Successfully");
+	        model.addAttribute(AppConstants.SUCC_MSG_KEY, AppConstants.SUCC_MSG_VALUE_DELETE);
 	    } else {
-	        model.addAttribute("errMsg", "Some error occurred during deletion");
+	        model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_DELETE);
 	    }
     	return "redirect:/dashboard";
     }
 	@GetMapping("/search")
 	@ResponseBody
     public List<DashboardResponse> searchPosts(@RequestParam("query") String query) {
-		Integer userId = (Integer) session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute(AppConstants.SESSION_USER_ID);
         return blogService.searchPosts(userId,query);
     }
 	@GetMapping("/comments")
 	public String toShowComment(Model model) {
-		Integer userId=(Integer)session.getAttribute("userId");
+		Integer userId=(Integer)session.getAttribute(AppConstants.SESSION_USER_ID);
 		List<ToShowComments> showComments = commentService.toShowComments(userId);
-		model.addAttribute("comments", showComments);
-		return "comments";
+		model.addAttribute(AppConstants.COMMENTS, showComments);
+		return AppConstants.COMMENTS;
+	}
+	@GetMapping("/deleteComment/{id}")
+	public String deleteComment(@PathVariable Integer id,Model model) {
+		boolean flag = commentService.deletePost(id);
+		if (flag) {
+	        model.addAttribute(AppConstants.SUCC_MSG_KEY, AppConstants.SUCC_MSG_VALUE_DELETE_COMMENT);
+	    } else {
+	        model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_DELETE_COMMENT);
+	    }
+		return "redirect:/comments";
 	}
 }

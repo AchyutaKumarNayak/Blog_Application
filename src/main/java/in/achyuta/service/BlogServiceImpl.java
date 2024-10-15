@@ -120,7 +120,7 @@ public class BlogServiceImpl implements BlogService {
 		Optional<Post> byId = postRepo.findById(postId);
 		if(byId.isPresent()) {
 			System.out.println("Deleting post: " + postId);
-			postRepo.deletePostById(postId);;
+			postRepo.deletePostById(postId);
 			return true;
 		}
 		System.out.println("Deleting post: " + postId);

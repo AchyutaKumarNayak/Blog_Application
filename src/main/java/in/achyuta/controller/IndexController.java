@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import in.achyuta.binding.DashboardResponse;
+import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Post;
 import in.achyuta.service.PostService;
 import jakarta.servlet.http.HttpSession;
@@ -30,13 +31,13 @@ public class IndexController {
 	 @GetMapping("/")
 	    public String getIndexPage(Model model) {
 	        List<Post> posts = postService.getIndexPage();
-	        model.addAttribute("posts", posts);
+	        model.addAttribute(AppConstants.POSTS, posts);
 	        System.out.println(posts);
-	        return "index";
+	        return AppConstants.INDEX;
 	    }
 	 @GetMapping("/filter")
 	 @ResponseBody
-	 public List<DashboardResponse> searchPosts(@RequestParam("query") String query) {
+	 public List<DashboardResponse> searchPosts(@RequestParam(AppConstants.SEARCH_QUERY) String query) {
 	     Integer userId = (Integer) session.getAttribute("userId");
 	     return postService.searchPosts(userId, query);
 	 }
