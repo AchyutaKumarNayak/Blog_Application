@@ -38,7 +38,7 @@ public class IndexController {
 	 @GetMapping("/filter")
 	 @ResponseBody
 	 public List<DashboardResponse> searchPosts(@RequestParam(AppConstants.SEARCH_QUERY) String query) {
-	     Integer userId = (Integer) session.getAttribute("userId");
+	     Integer userId = (Integer) session.getAttribute(AppConstants.SESSION_USER_ID);
 	     return postService.searchPosts(userId, query);
 	 }
 	 

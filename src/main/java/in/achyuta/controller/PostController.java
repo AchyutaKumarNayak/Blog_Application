@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Comment;
 import in.achyuta.entity.Post;
 import in.achyuta.service.CommentService;
@@ -33,10 +34,10 @@ public class PostController {
 		
 		Post postByPostId = postService.getPostByPostId(id);
 		List<Comment> topTwoCommentsByPost = commentService.getTopTwoCommentsByPost(postByPostId, 2);
-		model.addAttribute("post", postByPostId);
-		model.addAttribute("comments", topTwoCommentsByPost);
+		model.addAttribute(AppConstants.POST_CONTROLLER_POST, postByPostId);
+		model.addAttribute(AppConstants.POST_CONTROLLER_COMMENTS, topTwoCommentsByPost);
 		
-		return "post-details";
+		return AppConstants.POST_CONTROLLER_POST_DETAILS;
 		
 	}
 	@PostMapping("/{id}/comments")

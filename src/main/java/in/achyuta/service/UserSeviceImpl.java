@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import in.achyuta.binding.LoginForm;
 import in.achyuta.binding.RegistrationForm;
+import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.User;
 import in.achyuta.repository.UserRepo;
 import jakarta.servlet.http.HttpSession;
@@ -34,10 +35,10 @@ public class UserSeviceImpl implements UserService {
 	public String login(LoginForm form) {
 		User user = userRepo.findByEmailAndPassword(form.getEmail(), form.getPassword());
 		if(null==user) {
-			return "Invalid Credentials";
+			return AppConstants.USER_SERVICE_IMPL_FLAG_FAILURE;
 		}
 		session.setAttribute("userId", user.getUserId());
-		return "success";
+		return AppConstants.USER_CONTROLLER_FLAG_SUCCESS;
 	}
 
 	@Override

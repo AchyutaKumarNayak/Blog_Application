@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import in.achyuta.constants.AppConstants;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "COMMENT_TBL")
+@Table(name = AppConstants.COMMENT_ENTITY_TABLE_NAME)
 public class Comment {
 	
 	@Id
@@ -32,7 +33,7 @@ public class Comment {
 	private LocalDate createdOn;
 	
 	@ManyToOne
-	@JoinColumn(name = "post_id")
+	@JoinColumn(name = AppConstants.COMMENT_ENTITY_JOIN_COLOUMN_FK)
 	private Post post;
 	
 	

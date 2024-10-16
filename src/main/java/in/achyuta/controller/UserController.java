@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import in.achyuta.binding.LoginForm;
 import in.achyuta.binding.RegistrationForm;
+import in.achyuta.constants.AppConstants;
 import in.achyuta.service.UserService;
 
 @Controller
@@ -21,34 +22,34 @@ public class UserController {
 	
 	@GetMapping("/register")
 	public String getRegister(Model model) {
-		model.addAttribute("user", new RegistrationForm());
-		return "registration";
+		model.addAttribute(AppConstants.USER_CONTROLLER_USER, new RegistrationForm());
+		return AppConstants.USER_CONTROLLER_REGISTRATION;
 	}
 	@PostMapping("/register")
-	public String registerHandler(@ModelAttribute("user") RegistrationForm form, Model model) {
+	public String registerHandler(@ModelAttribute(AppConstants.USER_CONTROLLER_USER) RegistrationForm form, Model model) {
 		System.out.println(form);
 		boolean status = userService.register(form);
 		if(status) {
-			model.addAttribute("succMsg", "Regestration Succesfull");
+			model.addAttribute(AppConstants.SUCC_MSG_KEY, AppConstants.SUCC_MSG_VALUE_REGISTRATION);
 		}else {
-			model.addAttribute("errMsg", "Choose Unique Email");
+			model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_REGISTRATION);
 		}
-		return "registration";
+		return AppConstants.USER_CONTROLLER_REGISTRATION;
 	}
 	@GetMapping("/login")
 	public String getLogin(Model model) {
-		model.addAttribute("login", new LoginForm());
-		return "login";
+		model.addAttribute(AppConstants.USER_CONTROLLER_LOGIN, new LoginForm());
+		return AppConstants.USER_CONTROLLER_LOGIN;
 	}
 	@PostMapping("/login")
-	public String Login(@ModelAttribute("login") LoginForm form, Model model) {
+	public String Login(@ModelAttribute(AppConstants.USER_CONTROLLER_LOGIN) LoginForm form, Model model) {
 		String msg = userService.login(form);
-		if(msg.contains("success")) {
+		if(msg.contains(AppConstants.USER_CONTROLLER_FLAG_SUCCESS)) {
 			return "redirect:/dashboard";
 		}else {
-			model.addAttribute("errMsg", msg);
+			model.addAttribute(AppConstants.ERR_MSG_KEY, msg);
 		}
-		return "login";
+		return AppConstants.USER_CONTROLLER_LOGIN;
 	}
 
 }

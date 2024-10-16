@@ -2,6 +2,7 @@ package in.achyuta.entity;
 
 import java.util.List;
 
+import in.achyuta.constants.AppConstants;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "USER_TBL")
+@Table(name = AppConstants.USER_ENTITY_TABLE_NAME)
 public class User {
 	
 	@Id
@@ -26,7 +27,7 @@ public class User {
 	private String lastName;
 	private String email;
 	private String password;
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = AppConstants.USER_ENTITY_JOIN_COLOUMN_FK,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<Post> posts;
 
 }

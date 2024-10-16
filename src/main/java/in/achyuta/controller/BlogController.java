@@ -36,7 +36,7 @@ public class BlogController {
 	@GetMapping("/logout")
     public String logout() {
 		session.invalidate();
-    	return "index";
+    	return AppConstants.INDEX;
     }
 	
 	@GetMapping("/dashboard")

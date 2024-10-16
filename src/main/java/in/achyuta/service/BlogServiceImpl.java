@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import in.achyuta.binding.AddPostForm;
 import in.achyuta.binding.DashboardResponse;
+import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Post;
 import in.achyuta.entity.User;
 import in.achyuta.repository.PostRepo;
@@ -32,7 +33,7 @@ public class BlogServiceImpl implements BlogService {
 		
 		Post post= new Post();
 		BeanUtils.copyProperties(form, post);
-		Integer userId=(Integer)sesion.getAttribute("userId");
+		Integer userId=(Integer)sesion.getAttribute(AppConstants.SESSION_USER_ID);
 		 Optional<User> byId = userRepo.findById(userId);
 		 if(byId.isPresent()) {
 			 User user = byId.get();
@@ -119,11 +120,9 @@ public class BlogServiceImpl implements BlogService {
 	public boolean deletePost(Integer postId) {
 		Optional<Post> byId = postRepo.findById(postId);
 		if(byId.isPresent()) {
-			System.out.println("Deleting post: " + postId);
 			postRepo.deletePostById(postId);
 			return true;
 		}
-		System.out.println("Deleting post: " + postId);
 		return false;
 	}
 	@Override

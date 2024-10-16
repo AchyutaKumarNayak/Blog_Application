@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import in.achyuta.constants.AppConstants;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "POST_TBL")
+@Table(name = AppConstants.POST_ENTITY_TABLE_NAME)
 public class Post {
 	
 	@Id
@@ -39,7 +40,7 @@ public class Post {
 	
 	
 	@ManyToOne()
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = AppConstants.POST_ENTITY_JOIN_COLOUMN_FK)
 	private User user;
 	@OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE,orphanRemoval = true)
 	private List<Comment> comments;
