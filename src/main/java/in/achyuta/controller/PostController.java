@@ -19,7 +19,7 @@ import in.achyuta.service.CommentService;
 import in.achyuta.service.PostService;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping(AppConstants.POST_CONTROLLER_REQUEST_MAPPING)
 public class PostController {
 	
 	@Autowired
@@ -29,7 +29,7 @@ public class PostController {
 	private CommentService commentService;
 	
 	
-	@GetMapping("/{id}")
+	@GetMapping(AppConstants.POST_CONTROLLER_MAPPING_GET_POST_BY_ID)
 	public String getPostById(@PathVariable Integer id,Model model) {
 		
 		Post postByPostId = postService.getPostByPostId(id);
@@ -40,12 +40,12 @@ public class PostController {
 		return AppConstants.POST_CONTROLLER_POST_DETAILS;
 		
 	}
-	@PostMapping("/{id}/comments")
+	@PostMapping(AppConstants.POST_CONTROLLER_MAPPING_ADD_COMMENT)
     public String addComment(@PathVariable Integer id, @ModelAttribute Comment comment) {
         Post post = postService.getPostByPostId(id);
         comment.setPost(post);
         commentService.save(comment);
-        return "redirect:/posts/" + id + "?success=true"; // Redirect to the same page with success flag
+        return AppConstants.POST_CONTROLLER_REDIRECT_POSTS + id + AppConstants.POST_CONTROLLER_REDIRECT_POSTS_FLAG; // Redirect to the same page with success flag
     }
 
 }

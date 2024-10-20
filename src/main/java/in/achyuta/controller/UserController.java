@@ -20,12 +20,12 @@ public class UserController {
 	private UserService userService;
 	
 	
-	@GetMapping("/register")
+	@GetMapping(AppConstants.USER_CONTROLLER_MAPPING_REGISTER)
 	public String getRegister(Model model) {
 		model.addAttribute(AppConstants.USER_CONTROLLER_USER, new RegistrationForm());
 		return AppConstants.USER_CONTROLLER_REGISTRATION;
 	}
-	@PostMapping("/register")
+	@PostMapping(AppConstants.USER_CONTROLLER_MAPPING_REGISTER)
 	public String registerHandler(@ModelAttribute(AppConstants.USER_CONTROLLER_USER) RegistrationForm form, Model model) {
 		System.out.println(form);
 		boolean status = userService.register(form);
@@ -36,16 +36,16 @@ public class UserController {
 		}
 		return AppConstants.USER_CONTROLLER_REGISTRATION;
 	}
-	@GetMapping("/login")
+	@GetMapping(AppConstants.USER_CONTROLLER_MAPPING_LOGIN)
 	public String getLogin(Model model) {
 		model.addAttribute(AppConstants.USER_CONTROLLER_LOGIN, new LoginForm());
 		return AppConstants.USER_CONTROLLER_LOGIN;
 	}
-	@PostMapping("/login")
+	@PostMapping(AppConstants.USER_CONTROLLER_MAPPING_LOGIN)
 	public String Login(@ModelAttribute(AppConstants.USER_CONTROLLER_LOGIN) LoginForm form, Model model) {
 		String msg = userService.login(form);
 		if(msg.contains(AppConstants.USER_CONTROLLER_FLAG_SUCCESS)) {
-			return "redirect:/dashboard";
+			return AppConstants.BLOG_CONTROLLER_REDIRECT_DASHBOARD;
 		}else {
 			model.addAttribute(AppConstants.ERR_MSG_KEY, msg);
 		}

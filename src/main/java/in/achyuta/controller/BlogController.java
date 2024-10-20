@@ -33,25 +33,25 @@ public class BlogController {
 	
 	
 	
-	@GetMapping("/logout")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_LOGOUT)
     public String logout() {
 		session.invalidate();
     	return AppConstants.INDEX;
     }
 	
-	@GetMapping("/dashboard")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_DASHBOARD)
 	public String getDashboard(Model model) {
 		Integer userId =(Integer)session.getAttribute(AppConstants.SESSION_USER_ID);
 		List<DashboardResponse> dashboardRes = blogService.getDashboardRes(userId);
 		model.addAttribute(AppConstants.POSTS, dashboardRes);
 		return AppConstants.DASHBOARD;
 	}
-	@GetMapping("/addPost")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_ADD_POST)
 	public String addPost(Model model) {
 		model.addAttribute(AppConstants.ADD_POST,new AddPostForm());
 		return AppConstants.ADD_POST;
 	}
-	@PostMapping("/addPost")
+	@PostMapping(AppConstants.BLOG_CONTROLLER_MAPPING_ADD_POST)
 	public String handleAddPost(@ModelAttribute(AppConstants.ADD_POST) AddPostForm form,Model model) {
 		System.out.println(form);
 		boolean status = blogService.addPost(form);
@@ -60,21 +60,21 @@ public class BlogController {
 		}else {
 			model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_ADD);
 		}
-		return "redirect:/dashboard";
+		return AppConstants.BLOG_CONTROLLER_REDIRECT_DASHBOARD;
 	}
-	@GetMapping("/editPost/{id}")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_EDIT_POST_BY_ID)
 	public String editPost(@PathVariable Integer id, Model model) {
 	    AddPostForm form = blogService.editPost(id);
 	    System.out.println(form);
 	    model.addAttribute(AppConstants.ADD_POST, form);
 	    return AppConstants.EDIT_POST; 
 	}
-	@PostMapping("/updatePost")
+	@PostMapping(AppConstants.BLOG_CONTROLLER_MAPPING_UPDATE_POST)
 	public String updatePost(@ModelAttribute(AppConstants.ADD_POST) AddPostForm form, Model model) {
 	    blogService.updatePost(form);
-	    return "redirect:/dashboard";
+	    return AppConstants.BLOG_CONTROLLER_REDIRECT_DASHBOARD;
 	}
-	@GetMapping("/deletePost/{id}")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_DELETE_POST_BY_ID)
     public String deletePost(@PathVariable Integer id,Model model) {
 		boolean status = blogService.deletePost(id);
 		if (status) {
@@ -82,22 +82,22 @@ public class BlogController {
 	    } else {
 	        model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_DELETE);
 	    }
-    	return "redirect:/dashboard";
+    	return AppConstants.BLOG_CONTROLLER_REDIRECT_DASHBOARD;
     }
-	@GetMapping("/search")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_SEARCH)
 	@ResponseBody
-    public List<DashboardResponse> searchPosts(@RequestParam("query") String query) {
+    public List<DashboardResponse> searchPosts(@RequestParam(AppConstants.SEARCH_QUERY) String query) {
 		Integer userId = (Integer) session.getAttribute(AppConstants.SESSION_USER_ID);
         return blogService.searchPosts(userId,query);
     }
-	@GetMapping("/comments")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_COMMENTS)
 	public String toShowComment(Model model) {
 		Integer userId=(Integer)session.getAttribute(AppConstants.SESSION_USER_ID);
 		List<ToShowComments> showComments = commentService.toShowComments(userId);
 		model.addAttribute(AppConstants.COMMENTS, showComments);
 		return AppConstants.COMMENTS;
 	}
-	@GetMapping("/deleteComment/{id}")
+	@GetMapping(AppConstants.BLOG_CONTROLLER_MAPPING_DELETE_COMMENT_BY_ID)
 	public String deleteComment(@PathVariable Integer id,Model model) {
 		boolean flag = commentService.deletePost(id);
 		if (flag) {
@@ -105,6 +105,6 @@ public class BlogController {
 	    } else {
 	        model.addAttribute(AppConstants.ERR_MSG_KEY, AppConstants.ERR_MSG_VALUE_DELETE_COMMENT);
 	    }
-		return "redirect:/comments";
+		return AppConstants.BLOG_CONTROLLER_REDIRECT_COMMENTS;
 	}
 }

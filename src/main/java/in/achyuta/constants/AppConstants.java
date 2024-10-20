@@ -38,6 +38,39 @@ public class AppConstants {
 	public static final String USER_ENTITY_JOIN_COLOUMN_FK    ="user";
 	
 	
+	public static final String USER_CONTROLLER_MAPPING_REGISTER="/register";
+	public static final String USER_CONTROLLER_MAPPING_LOGIN="/login";
+	
+	public static final String BLOG_CONTROLLER_MAPPING_LOGOUT="/logout";
+	public static final String BLOG_CONTROLLER_MAPPING_DASHBOARD="/dashboard";
+	public static final String BLOG_CONTROLLER_MAPPING_ADD_POST="/addPost";
+	public static final String BLOG_CONTROLLER_MAPPING_UPDATE_POST="/updatePost";
+	public static final String BLOG_CONTROLLER_MAPPING_SEARCH="/search";
+	public static final String BLOG_CONTROLLER_MAPPING_COMMENTS="/comments";
+	public static final String BLOG_CONTROLLER_REDIRECT_DASHBOARD="redirect:/dashboard";
+	public static final String BLOG_CONTROLLER_REDIRECT_COMMENTS="redirect:/comments";
+	public static final String BLOG_CONTROLLER_MAPPING_EDIT_POST_BY_ID="/editPost/{id}";
+	public static final String BLOG_CONTROLLER_MAPPING_DELETE_POST_BY_ID="/deletePost/{id}";
+	public static final String BLOG_CONTROLLER_MAPPING_DELETE_COMMENT_BY_ID="/deleteComment/{id}";
+	
+	
+	public static final String POST_CONTROLLER_REQUEST_MAPPING="/posts";
+	public static final String POST_CONTROLLER_MAPPING_GET_POST_BY_ID="/{id}";
+	public static final String POST_CONTROLLER_MAPPING_ADD_COMMENT="/{id}/comments";
+	public static final String POST_CONTROLLER_REDIRECT_POSTS="/{id}/comments";
+	public static final String POST_CONTROLLER_REDIRECT_POSTS_FLAG="?success=true";
+	
+	
+	public static final String INDEX_CONTROLLER_MAPPING="/";
+	public static final String INDEX_CONTROLLER_MAPPING_FILTER="/filter";
+
+	
+
+
+	
+	
+	
+	
 	
 	
 	private AppConstants() {}

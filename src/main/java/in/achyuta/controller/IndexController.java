@@ -28,14 +28,14 @@ public class IndexController {
 	@Autowired
 	private PostService postService;
 	
-	 @GetMapping("/")
+	 @GetMapping(AppConstants.INDEX_CONTROLLER_MAPPING)
 	    public String getIndexPage(Model model) {
 	        List<Post> posts = postService.getIndexPage();
 	        model.addAttribute(AppConstants.POSTS, posts);
 	        System.out.println(posts);
 	        return AppConstants.INDEX;
 	    }
-	 @GetMapping("/filter")
+	 @GetMapping(AppConstants.INDEX_CONTROLLER_MAPPING_FILTER)
 	 @ResponseBody
 	 public List<DashboardResponse> searchPosts(@RequestParam(AppConstants.SEARCH_QUERY) String query) {
 	     Integer userId = (Integer) session.getAttribute(AppConstants.SESSION_USER_ID);
