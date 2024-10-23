@@ -57,7 +57,7 @@ public class AppConstants {
 	public static final String POST_CONTROLLER_REQUEST_MAPPING="/posts";
 	public static final String POST_CONTROLLER_MAPPING_GET_POST_BY_ID="/{id}";
 	public static final String POST_CONTROLLER_MAPPING_ADD_COMMENT="/{id}/comments";
-	public static final String POST_CONTROLLER_REDIRECT_POSTS="/{id}/comments";
+	public static final String POST_CONTROLLER_REDIRECT_POSTS="redirect:/posts/";
 	public static final String POST_CONTROLLER_REDIRECT_POSTS_FLAG="?success=true";
 	
 	
