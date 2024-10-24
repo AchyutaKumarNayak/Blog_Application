@@ -2,10 +2,11 @@ package in.achyuta.service;
 
 import java.util.List;
 
+
 import in.achyuta.binding.AddPostForm;
 import in.achyuta.binding.DashboardResponse;
 import in.achyuta.entity.Post;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 
 public interface BlogService {
 	

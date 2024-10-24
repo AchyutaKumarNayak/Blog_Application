@@ -1,6 +1,7 @@
 package in.achyuta.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import in.achyuta.entity.Post;
 import in.achyuta.entity.User;
 import in.achyuta.repository.PostRepo;
 import in.achyuta.repository.UserRepo;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 @Service
 public class BlogServiceImpl implements BlogService {

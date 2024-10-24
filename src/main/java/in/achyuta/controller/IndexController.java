@@ -2,6 +2,7 @@ package in.achyuta.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,7 @@ import in.achyuta.binding.DashboardResponse;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Post;
 import in.achyuta.service.PostService;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {

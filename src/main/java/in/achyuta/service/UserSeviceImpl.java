@@ -1,6 +1,7 @@
 package in.achyuta.service;
 
 import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import in.achyuta.binding.RegistrationForm;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.User;
 import in.achyuta.repository.UserRepo;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 @Service
 public class UserSeviceImpl implements UserService {

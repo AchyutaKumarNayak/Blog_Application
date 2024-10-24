@@ -2,6 +2,7 @@ package in.achyuta.repository;
 
 import java.util.List;
 
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Comment;
 import in.achyuta.entity.Post;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 
 public interface CommentRepo extends JpaRepository<Comment, Integer> {
 	
