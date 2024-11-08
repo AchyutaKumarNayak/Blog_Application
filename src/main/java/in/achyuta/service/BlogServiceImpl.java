@@ -16,7 +16,7 @@ import in.achyuta.entity.Post;
 import in.achyuta.entity.User;
 import in.achyuta.repository.PostRepo;
 import in.achyuta.repository.UserRepo;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class BlogServiceImpl implements BlogService {

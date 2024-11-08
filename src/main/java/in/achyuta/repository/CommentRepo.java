@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Comment;
 import in.achyuta.entity.Post;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 public interface CommentRepo extends JpaRepository<Comment, Integer> {
 	

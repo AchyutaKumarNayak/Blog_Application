@@ -10,7 +10,7 @@ import in.achyuta.binding.RegistrationForm;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.User;
 import in.achyuta.repository.UserRepo;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserSeviceImpl implements UserService {

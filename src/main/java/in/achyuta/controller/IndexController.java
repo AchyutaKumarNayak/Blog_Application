@@ -14,8 +14,7 @@ import in.achyuta.binding.DashboardResponse;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.entity.Post;
 import in.achyuta.service.PostService;
-import javax.servlet.http.HttpSession;
-
+import jakarta.servlet.http.HttpSession;
 @Controller
 public class IndexController {
 	

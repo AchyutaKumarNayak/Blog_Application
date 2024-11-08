@@ -6,7 +6,7 @@ import java.util.List;
 import in.achyuta.binding.AddPostForm;
 import in.achyuta.binding.DashboardResponse;
 import in.achyuta.entity.Post;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 public interface BlogService {
 	

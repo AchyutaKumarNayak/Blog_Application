@@ -3,6 +3,7 @@ package in.achyuta.controller;
 import java.util.List;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ import in.achyuta.binding.ToShowComments;
 import in.achyuta.constants.AppConstants;
 import in.achyuta.service.BlogService;
 import in.achyuta.service.CommentService;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class BlogController {
